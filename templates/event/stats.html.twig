@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des Emplacements{% endblock %}
+
+{% block body %}
+    <h1>Statistiques des Emplacements par Nombre de Places</h1>
+
+    <canvas id="statsChart" width="400" height="200"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('statsChart').getContext('2d');
+        var statsChart = new Chart(ctx, {
+            type: 'line', // Type de graphique
+            data: {
+                labels: {{ locations|raw }}, // Les emplacements comme labels sur l'axe X
+                datasets: [{
+                    label: 'Nombre de l emplacement',
+                    data: {{ places|raw }}, // Les nombres de places sur l'axe Y
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Emplacements'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Nombre de Places'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <a href="{{ path('app_event_list') }}" class="btn btn-info">Retour à la liste</a>
+{% endblock %}

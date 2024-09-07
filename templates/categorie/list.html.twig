@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affichage{% endblock %}
+
+{% block body %}
+    <h1>Liste des catégories</h1>
+
+    <form method="get" action="{{ path('app_categorie_list') }}" class="mb-3">
+        <div class="form-group">
+            <input type="text" name="search" value="{{ searchTerm }}" placeholder="Recherche par nom" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Rechercher</button>
+        <a href="{{ path('app_categorie_list') }}" class="btn btn-secondary">Réinitialisation</a>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for categorie in categories %}
+                <tr>
+                    <td>{{ categorie.nom }}</td>
+                    <td>
+                        <a href="{{ path('app_categorie_edit', {id: categorie.id}) }}" class="btn btn-warning">Modifier</a>
+                        <form method="post" action="{{ path('app_categorie_delete', {id: categorie.id}) }}" style="display:inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_categorie_add') }}" class="btn btn-warning">Retour au formulaire d'ajout</a>
+{% endblock %}

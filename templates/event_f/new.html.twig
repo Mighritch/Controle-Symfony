@@ -1,0 +1,16 @@
+
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('css/front.css') }}">
+
+    <h1>Ajouter un Commentaire</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.contenu) }} {# Utilisez 'contenu' comme nom de champ dans le formulaire #}
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+    {{ form_end(form) }}
+
+    <a href="{{ path('event_affichage', { 'id': app.request.get('id') }) }}">Retour à l'événement</a>
+{% endblock %}

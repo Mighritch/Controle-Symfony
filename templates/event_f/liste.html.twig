@@ -1,0 +1,48 @@
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('css/front.css') }}">
+
+    <h1>Liste des événements</h1>
+
+    <form method="get" action="{{ path('event_affichage') }}" class="mb-3">
+        <div class="form-group">
+            <label for="search">Recherche par nom:</label>
+            <input type="text" id="search" name="search" value="{{ searchTerm }}" class="form-control" placeholder="Rechercher un événement...">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+        <!-- Bouton Réinitialiser -->
+        <a href="{{ path('event_affichage') }}" class="btn btn-secondary">Réinitialiser</a>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Emplacement</th>
+                <th>Nombre de places</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.nom }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.emplacement }}</td>
+                    <td>{{ event.nombreplaces }}</td>
+                    <td>{{ event.date|date('Y-m-d') }}</td>
+                    <td>
+                        <a href="{{ event.getGoogleMapsLink() }}" target="_blank" class="btn btn-sm btn-info">Voir sur Google Maps</a>
+                        {% if event.nombreplaces > 0 %}
+                            <a href="{{ path('app_event_reserve', {'id': event.id}) }}" class="btn btn-sm btn-warning">Réserver</a>
+                        {% endif %}
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

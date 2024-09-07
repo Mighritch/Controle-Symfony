@@ -1,0 +1,47 @@
+{# templates/event/search.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Recherche d'événements</h1>
+
+    <form method="get" action="{{ path('app_event_search') }}">
+        <div class="form-group">
+            <label for="search">Recherche par nom:</label>
+            <input type="text" id="search" name="search" value="{{ searchTerm }}" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+
+    <h2>Résultats de la recherche</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Emplacement</th>
+                <th>Nombre de places</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.nom }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.emplacement }}</td>
+                    <td>{{ event.nombreplaces }}</td>
+                    <td>{{ event.date|date('Y-m-d') }}</td>
+                    <td>
+                        <a href="{{ path('app_event_edit', {id: event.id}) }}" class="btn btn-warning"><button>Modifier</button></a>
+                        <form method="post" action="{{ path('app_event_delete', {id: event.id}) }}" style="display:inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% block body %}
+    <h1>Reserve Warehouse</h1>
+    <link rel="stylesheet" href="{{ asset('css/front.css') }}">
+
+    {% if event.nombrePlaces > 0 %}
+        {{ form_start(form) }}
+            {{ form_row(form.nombreplaces) }}
+            <button type="submit">Réserver</button>
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('css/front.css') }}">
+
+    <h1>Liste des catégories</h1>
+     <form method="get" action="{{ path('categorie_affichage') }}" class="mb-3">
+        <div class="form-group">
+            <label for="search">Recherche par nom:</label>
+            <input type="text" id="search" name="search" value="{{ searchTerm }}" class="form-control" placeholder="Rechercher un événement...">
+        </div>
+
+     <button type="submit" class="btn btn-primary">Rechercher</button>
+        <!-- Bouton Réinitialiser -->
+        <a href="{{ path('categorie_affichage') }}" class="btn btn-secondary">Réinitialisation</a>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for categorie in categories %}
+                <tr>
+                    <td>{{ categorie.nom }}</td>
+                  
+                </tr>
+               
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

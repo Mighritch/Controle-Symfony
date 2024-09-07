@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des événements</h1>
+
+    <!-- Formulaire de recherche -->
+    <form method="get" action="{{ path('app_event_list') }}" class="mb-3">
+        <div class="form-group">
+            <label for="search">Recherche par nom:</label>
+            <input type="text" id="search" name="search" value="{{ searchTerm }}" class="form-control" placeholder="Rechercher un événement...">
+        </div>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+        <!-- Bouton Réinitialiser -->
+        <a href="{{ path('app_event_list') }}" class="btn btn-secondary">Réinitialisation</a>
+    </form>
+
+        <a href="{{ path('app_event_pdf') }}" class="btn btn-warning">PDF</a>
+
+        <a href="{{ path('app_event_stats') }}" class="btn btn-warning">Stat</a>
+
+    <!-- Autres contenus -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Emplacement</th>
+                <th>Nombre de places</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.nom }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.emplacement }}</td>
+                    <td>{{ event.nombreplaces }}</td>
+                    <td>{{ event.date|date('Y-m-d') }}</td>
+                    <td>
+                        <a href="{{ path('app_event_edit', {id: event.id}) }}" class="btn btn-warning">Modifier</a>
+                        <form method="post" action="{{ path('app_event_delete', {id: event.id}) }}" style="display:inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_event_add') }}" class="btn btn-warning">Ajout</a>
+{% endblock %}
