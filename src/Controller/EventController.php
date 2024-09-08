@@ -35,11 +35,32 @@ class EventController extends AbstractController
 
         $form->handleRequest($request);
 
+        // Validation personnalisée
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($event);
-            $entityManager->flush();
+            // Récupérer la date actuelle pour comparaison
+            $currentDate = new \DateTime();
 
-            return $this->redirectToRoute('app_event_list');
+            // Récupérer la date de l'événement et le nombre de places
+            $eventDate = $event->getDate();
+            $nombrePlaces = $event->getNombrePlaces();
+
+            // Vérifier que la date de l'événement est au moins la date actuelle
+            if ($eventDate < $currentDate) {
+                $this->addFlash('error', 'La date de l\'événement doit être au minimum la date du jour.');
+            } 
+            // Vérifier que le nombre de places est supérieur à 0
+            elseif ($nombrePlaces <= 0) {
+                $this->addFlash('error', 'Le nombre de places doit être supérieur à 0.');
+            } 
+            // Vérifier que tous les champs obligatoires sont remplis (Symfony s'occupe de cette validation avec les contraintes des entités)
+            else {
+                // Si toutes les conditions sont remplies, persister l'événement
+                $entityManager->persist($event);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Événement ajouté avec succès.');
+                return $this->redirectToRoute('app_event_list');
+            }
         }
 
         return $this->render('event/add.html.twig', [
