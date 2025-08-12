@@ -38,6 +38,9 @@ class Event
     #[Assert\Type(type: \DateTimeInterface::class, message: 'The date should be a valid date.')]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column]
+    private ?int $prix = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -109,5 +112,17 @@ class Event
         $query = urlencode($this->getEmplacement());
     
         return $baseUrl . $query;
+    }
+
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(int $prix): static
+    {
+        $this->prix = $prix;
+
+        return $this;
     }
 }
